@@ -16,7 +16,9 @@ jobs:
     - name: Set up JDK
       uses: actions/setup-java@v2
       with:
-        java-version: 'openjdk@1.8'  # 或者你需要的Java版本
+        java-version: 'openjdk@1.8'
+        java-package: jdk
+        architecture: x64
 
     - name: Install Flutter
       uses: subosito/flutter-action@v1
