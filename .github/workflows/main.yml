@@ -1,47 +1,37 @@
-name: Build APK for drinkshop
+name: Flutter Build
 
 on:
   push:
-    branches:
-      - master  # 或者你想要触发构建的分支
+    branches:  master 
 
 jobs:
   build:
+
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
-
-    - name: Set up JDK
-      uses: actions/setup-java@v2
-      with:
-        java-version: 'openjdk@1.8'
-        java-package: jdk
-        architecture: x64
+    - uses: actions/checkout@v2
 
     - name: Install Flutter
       uses: subosito/flutter-action@v1
       with:
-        flutter-version: '1.0.0'  # 指定你想要的Flutter版本
+        flutter-version: '1.22.5' # 请根据你的项目需求选择合适的Flutter版本
 
+        
     - name: Change to drinkshop directory
       run: cd drinkshop
-
+      
     - name: Install dependencies
       run: flutter pub get
 
-    - name: Build APK
-      run: flutter build apk
+    - name: Verify and analyze project
+      run: flutter analyze
 
-    - name: Upload Artifact
+    - name: Build project
+      run: flutter build apk --release
+
+    - name: Upload build artifact
       uses: actions/upload-artifact@v2
       with:
-        name: drinkshop-artifacts
-        path: drinkshop/build/app/outputs/flutter-apk/
-
-    - name: Release
-      uses: ncipollo/release-action@v1
-      with:
-        artifacts: "drinkshop/build/app/outputs/flutter-apk/*.apk"
-        token: ${{ secrets.GITHUB_TOKEN }}
+        name: app-release
+        path: build/app/outputs/flutter-apk/app-release.apk
