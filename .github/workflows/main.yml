@@ -1,4 +1,4 @@
-name: Build and Release APK
+name: Build APK for drinkshop
 
 on:
   push:
@@ -23,6 +23,9 @@ jobs:
       with:
         flutter-version: '1.0.0'  # 指定你想要的Flutter版本
 
+    - name: Change to drinkshop directory
+      run: cd drinkshop
+
     - name: Install dependencies
       run: flutter pub get
 
@@ -32,11 +35,11 @@ jobs:
     - name: Upload Artifact
       uses: actions/upload-artifact@v2
       with:
-        name: app-artifacts
-        path: build/app/outputs/flutter-apk/
+        name: drinkshop-artifacts
+        path: drinkshop/build/app/outputs/flutter-apk/
 
     - name: Release
       uses: ncipollo/release-action@v1
       with:
-        artifacts: "build/app/outputs/flutter-apk/*.apk"
+        artifacts: "drinkshop/build/app/outputs/flutter-apk/*.apk"
         token: ${{ secrets.GITHUB_TOKEN }}
