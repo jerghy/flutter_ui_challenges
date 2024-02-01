@@ -1,35 +1,31 @@
-name: Flutter Build
+name: Flutter Build and Deploy
 
 on:
   push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+    branches:
+      - main  # 或者你想要触发构建的分支
 
 jobs:
-  build:
-
-    runs-on: ubuntu-latest
+  build_and_deploy:
+    runs-on: ubuntu-latest  # 使用Ubuntu运行环境
 
     steps:
-    - uses: actions/checkout@v2
+    - name: Checkout repository
+      uses: actions/checkout@v2
 
-    - name: Install Flutter
+    - name: Set up Flutter
       uses: subosito/flutter-action@v1
       with:
-        flutter-version: '1.22.5' # 请根据你的项目需求选择合适的Flutter版本
+        flutter-version: '1.22.0'  # 指定Flutter版本，这里假设你想要使用的是Flutter 1.22.0版本
 
     - name: Install dependencies
       run: flutter pub get
 
-    - name: Verify and analyze project
-      run: flutter analyze
-
     - name: Build project
-      run: flutter build apk --release
+      run: flutter build web
 
-    - name: Upload build artifact
-      uses: actions/upload-artifact@v2
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
       with:
-        name: app-release
-        path: build/app/outputs/flutter-apk/app-release.apk
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./build/web  # 你的构建输出目录
