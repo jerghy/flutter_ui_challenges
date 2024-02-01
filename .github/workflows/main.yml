@@ -15,7 +15,10 @@ jobs:
 
         
     - name: Change to drinkshop directory
+      run: cd drinkshop
+    - name: Change to drinkshop directory2
       run: dir
+      
 
 
 
